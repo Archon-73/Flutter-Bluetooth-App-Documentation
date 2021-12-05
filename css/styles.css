@@ -4,6 +4,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  scroll-behavior: smooth;
   /* border: 1px solid red; */
 }
 
@@ -105,6 +106,10 @@ main {
   padding: 2rem;
 }
 
+section {
+  scroll-margin-top: 12.5em;
+}
+
 h1 {
   font-size: 50px;
 }
@@ -121,4 +126,71 @@ a {
 
 #overview {
   margin-bottom: 75px;
+}
+
+.code-editor {
+  width: 750px;
+  background-color: #0d1117;
+  border-radius: 7px;
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  padding: 5px;
+}
+
+.editor-window-header {
+  height: 35px;
+  position: relative;
+  user-select: none;
+}
+
+.action-buttons {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  margin-top: -7px;
+  width: 15px;
+  height: 15px;
+  background: Crimson;
+  border-radius: 50%;
+  box-shadow: 25px 0 0 Orange, 50px 0 0 LimeGreen;
+}
+
+.window-header-text {
+  display: inline-block;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  margin-top: -10px;
+  height: 21px;
+  padding: 0 1em;
+  text-align: right;
+  color: gray;
+}
+
+.editor-body::-webkit-scrollbar {
+  width: 5px;
+}
+
+.editor-body::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+.editor-body {
+  padding: 15px;
+  font-family: Lato, sans-serif;
+  font-size: 15px;
+  overflow: overlay;
+}
+
+.file-names {
+  color: lightskyblue;
+}
+
+.commands {
+  color: gold;
+}
+
+.file-paths {
+  color: lightseagreen;
 }

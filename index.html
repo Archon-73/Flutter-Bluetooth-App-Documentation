@@ -37,7 +37,7 @@
     <nav id="navbar">
       <ul>
         <li><a href="#overview">Overview</a></li>
-        <li><a href="#prerequisites">Prequisites</a></li>
+        <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="">Splash Screen</a></li>
         <li><a href="">Controller</a></li>
         <li><a href="">Bluetooth Functions</a></a>
@@ -57,10 +57,43 @@
         <article>
         </article>
       </section>
-      <section id="prequisites">
+      <section id="prerequisites">
         <h1>Prerequisites</h1>
-        <p>For this project, we are going to add a bunch of libraries. <a href="https://pub.dev/packages/flutter_bluetooth_serial" target="_blank">Flutter Bluetooth Serial</a> for Bluetooth functionality. Animated Splash Screen and Page Transitions for adding a Splash Screen. Shared Preference for saving and retrieving user settings for local storage.</p>
+        <p>For this project, we are going to add a bunch of libraries. <a href="https://pub.dev/packages/flutter_bluetooth_serial" target="_blank">Flutter Bluetooth Serial</a> for Bluetooth functionality. <a href="https://pub.dev/packages/animated_splash_screen" target="_blank">Animated Splash Screen</a> and <a href="https://pub.dev/packages/page_transition" target="_blank">Page Transitions</a> for adding a Splash Screen. <a href="https://pub.dev/packages/shared_preferences" target="_blank">Shared Preferences</a> for saving and retrieving user settings for local storage.</p>
         <p>Splash Screen and saving files are optional. However, we want to give the user the freedom to select any output for the buttons. To accomplish that we are going to save user preferences to the local storage.</p>
+        <p><br/><br/>Now, it's time to change add some dependencies in the <span class="file-names">pubspec.yaml</span> file.</p>
+        <div class="code-editor">
+          <div class="editor-window-header">
+            <div class="action-buttons"></div>
+            <h3 class="window-header-text">pubspec.yaml</h3>
+          </div>
+          <div class="editor-body">
+            <pre><code class="language-yaml">dependencies:
+
+  #Bluetooth
+  flutter_bluetooth_serial: ^0.4.0
+  #Splash Screen
+  animated_splash_screen: ^1.1.0
+  page_transition: ^2.0.1-nullsafety.0
+  #Settings
+  shared_preferences: ^2.0.8</code></pre>
+          </div>
+        </div>
+        <p>After adding the dependencies, press <span class="commands">pub.get</span> to download and install all dependencies</p>
+        <p>You may or may not see an error, but to make the libraries work, we need to change the <span class="commands">minSdkVersion</span> in the <span class="file-names">build.gradle</span> file. The file can be found in the path <span class="file-paths">&lt;Project Name&gt;/android/app/build.gradle</span></p>
+        <div class="code-editor">
+          <div class="editor-window-header">
+            <div class="action-buttons"></div>
+            <h3 class="window-header-text">build.gradle</h3>
+          </div>
+          <div class="editor-body">
+            <pre><code class="language-yaml">android {
+    defaultConfig {
+        minSdkVersion 19
+    }
+}</code></pre>
+          </div>
+        </div>
       </section>
     </main>
   </body>
