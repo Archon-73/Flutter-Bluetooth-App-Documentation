@@ -75,6 +75,7 @@ nav li {
 }
 
 nav li a {
+  color: lightcyan;
   display: inline-block;
   padding: 30px;
   text-decoration: none;
@@ -111,6 +112,11 @@ h1 {
 p {
   margin: 30px 0;
   font-size: 16px;
+}
+
+a {
+  text-decoration: none;
+  color: lightcoral;
 }
 
 #overview {
