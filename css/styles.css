@@ -1,6 +1,5 @@
 * {
   color: white;
-  font-family: "Poppins";
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -13,6 +12,7 @@ body {
   scrollbar-width: none; /* for Firefox */
   overflow-y: overlay;
   background-color: #121212;
+  font-family: "Poppins";
 }
 
 body::-webkit-scrollbar {
@@ -69,6 +69,7 @@ nav {
   background-color: rgb(32, 32, 32);
   box-shadow: 0 5px 4px 0 rgba(0, 0, 0, 0.5);
   user-select: none;
+  z-index: 1;
 }
 
 nav li {
@@ -108,6 +109,7 @@ main {
 
 section {
   scroll-margin-top: 12.5em;
+  margin-bottom: 75px;
 }
 
 h1 {
@@ -124,12 +126,8 @@ a {
   color: lightcoral;
 }
 
-#overview {
-  margin-bottom: 75px;
-}
-
 .code-editor {
-  width: 750px;
+  width: 100%;
   background-color: #0d1117;
   border-radius: 7px;
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
@@ -178,19 +176,31 @@ a {
 
 .editor-body {
   padding: 15px;
-  font-family: Lato, sans-serif;
+  font-family: "Space Mono";
   font-size: 15px;
   overflow: overlay;
 }
 
 .file-names {
-  color: lightskyblue;
+  color: dodgerblue;
+  font-family: "Space Mono";
 }
 
 .commands {
-  color: gold;
+  color: coral;
+  font-family: "Space Mono";
 }
 
 .file-paths {
   color: lightseagreen;
+  font-family: "Space Mono";
+}
+
+.function-property {
+  color: skyblue;
+  font-family: "Space Mono";
+}
+
+.section-reference {
+  color: cyan;
 }

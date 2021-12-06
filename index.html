@@ -12,6 +12,10 @@
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Space+Mono&display=swap"
       rel="stylesheet"
     />
+    <!--Space Mono Font-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet">
     <!--Website Icon-->
     <link
       rel="shortcut icon"
@@ -38,11 +42,11 @@
       <ul>
         <li><a href="#overview">Overview</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="">Splash Screen</a></li>
+        <li><a href="#splash-screen">Splash Screen</a></li>
         <li><a href="">Controller</a></li>
         <li><a href="">Bluetooth Functions</a></a>
         <li><a href="">Settings</a></li>
-        <li><a href="">Save Files</a></li>
+        <li><a href="">Save File</a></li>
       </ul>
       <a href="https://github.com/Archon-73/Bluetooth-Controller-Android-App" class="github" target="_blank"><img src="./assets/Github.svg"></a>
     </nav>
@@ -54,8 +58,6 @@
         <p>To solve this problem, I had set out to develop a mobile app that looks modern and works effortlessly but as you know, destiny and had other plans for me. There is "NO" documentation on Bluetooth functionality for Android devices and don't even get me started on iOS.</p>
         <p>The purpose of this whole website is to help you build a working Android app that can be used to control your robots and other devices using Bluetooth Classic Modules. For this project, we will be using Flutter to develop the app and to test the app we will be using Arduino Uno Rev3 with an HC-05 Bluetooth Module.</p>
         <p>I am assuming that you already have Android Studio installed, along with Flutter, and also have a basic understanding of Dart programming language.</p>
-        <article>
-        </article>
       </section>
       <section id="prerequisites">
         <h1>Prerequisites</h1>
@@ -94,6 +96,118 @@
 }</code></pre>
           </div>
         </div>
+      </section>
+      <section id="splash-screen">
+        <h1>Splash Screen</h1>
+        <p>We are going to add the splash screen in our <span class="file-names">main.dart</span> file since this is the first file Flutter runs. Adding a splash screen is completely optional and you can skip this section.</p>
+        <p>We will start by importing our libraries and other files.</p>
+        <div class="code-editor">
+          <div class="editor-window-header">
+            <div class="action-buttons"></div>
+            <h3 class="window-header-text">main.dart</h3>
+          </div>
+          <div class="editor-body">
+            <pre><code class="language-dart">import 'package:bluetooth_controller/file_storage_functions.dart'; //All functions for file storage are here
+import 'package:flutter/material.dart'; //Default Flutter Material Library
+import 'package:flutter/services.dart'; //Default Flutter Material Library
+import 'controller.dart'; //Page of the Controller
+import 'package:page_transition/page_transition.dart'; //Splash Screen Transitions
+import 'package:animated_splash_screen/animated_splash_screen.dart'; //Splash Screen Library
+import 'package:shared_preferences/shared_preferences.dart'; //Shared Preferences Library</code></pre>
+          </div>
+        </div>
+        <p>I am just going to add 3 lines of code that look the screen orientation to landscape and remove the status and notification bar which flutter adds by default. Doing this is completely optional.</p>
+        <div class="code-editor">
+          <div class="editor-window-header">
+            <div class="action-buttons"></div>
+            <h3 class="window-header-text">main.dart</h3>
+          </div>
+          <div class="editor-body">
+            <pre><code class="language-dart">void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]); //Setting Orientation
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []); //Removing Status Bar and Navigation Bar
+}</code></pre>
+          </div>
+        </div>
+        <p>Now let's finally add our splash screen. The Splash Screen library allows us to add animated splash screens. We are going to use a slide animation with a fade-out transition to the actual content of the page.</p>
+        <div class="code-editor">
+          <div class="editor-window-header">
+            <div class="action-buttons"></div>
+            <h3 class="window-header-text">main.dart</h3>
+          </div>
+        <div class="editor-body">
+          <pre><code class="language-dart">void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft, DeviceOrientation.landscapeRight]); //Setting Orientation
+  SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []); //Removing Status Bar and Navigation Bar
+
+    runApp(MaterialApp(
+        theme: ThemeData.dark(),
+        debugShowCheckedModeBanner: false,
+        home: AnimatedSplashScreen(
+          backgroundColor: Color(0xff121212),
+          splash: Image.asset('assets/TTA-Logo.png', fit: BoxFit.cover,),
+          animationDuration: Duration(seconds: 1, milliseconds: 500),
+          splashTransition: SplashTransition.slideTransition,
+          pageTransitionType: PageTransitionType.fade,
+          nextScreen: Start(),
+        )
+        )
+    );
+}</code></pre>
+        </div>
+      </div>
+      <p>The line <span class="commands">debugShowCheckedModeBanner: false,</span> removes the Demo ribbon that comes by default in the flutter app.</p>
+      <p><span class="commands">AnimatedSplashScreen()</span> function adds an animated splash screen, with the <span class="function-property">splash</span> and <span class="function-property">nextScreen</span> property being required. For my case, splash is an image. <span class="function-property">splashTransition</span> and <span class="function-property">pageTransition</span> both determines how the image and the next page are going to appear. The entire splash screen is only going to be on the screen for 1.5 seconds which is determined by the property <span class="function-property">animationDuration</span>.</p>
+      <div class="code-editor">
+        <div class="editor-window-header">
+          <div class="action-buttons"></div>
+          <h3 class="window-header-text">main.dart</h3>
+        </div>
+      <div class="editor-body">
+        <pre><code class="language-dart">class Start extends StatelessWidget {
+  const Start({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: const Color(0xff121212),
+      body: Center(
+        child: ElevatedButton.icon(
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              getVisitingStatus();
+              if(alreadyVisited == false || prefs.containsKey('alreadyVisited') == false){
+                restoreToDefaults();
+                Future.delayed(const Duration(milliseconds: 50));
+                loadSettings();
+                setVisitingStatus();
+              }else{
+                Future.delayed(const Duration(milliseconds: 50));
+                loadSettings();
+              }
+              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Controller()));
+            },
+            icon: const Icon(Icons.play_arrow),
+            label: const Text("ENTER", style: TextStyle(fontSize: 30),),
+            style: ElevatedButton.styleFrom(
+              shadowColor: Colors.black26,
+              elevation: 5,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0), side: BorderSide(width: 5, color: Colors.black54),),
+              padding: EdgeInsets.fromLTRB(20,20,30,20),
+              primary: Colors.deepPurpleAccent
+            ),
+        ),
+      ),
+    );
+  }
+}</code></pre>
+      </div>
+    </div>  
+      <p>For ease of use, I made a dummy Start screen using a <span class="commands">StatelessWidget</span>. This page just contains a button that redirects to the <span class="file-names">Controller</span> page whilst also loading the user settings. User settings are loaded using an instance, <span class="function-property">prefs</span>, of the <span class="function-property">SharedPreference</span> class. You will learn more about the SharedPreference class in the <span class="section-reference">Save File</span> section.</p>
+      <p><span class="commands">getVisitingStatus()</span>, <span class="commands">restoreToDefaults()</span>, <span class="commands">loadSettings()</span> and <span class="commands">setVisitingStatus()</span> are functions which are going to be discussed in <span class="section-reference">Save File</span> section.</p>
+      <p>The line <span class="commands">Navigator.of(context).push(MaterialPageRoute(builder: (context) => Controller()));</span> basically moves to the <span class="file-names">Controller</span> page. This is usually written in the <span class="function-property">onPressed</span> property of a button or any in any code blocks where page trasfer is required.</p>
       </section>
     </main>
   </body>
