@@ -7,11 +7,13 @@
   /* border: 1px solid red; */
 }
 
+/* color to use #5865f2 */
+
 body {
   -ms-overflow-style: none; /* for Internet Explorer, Edge */
   scrollbar-width: none; /* for Firefox */
   overflow-y: overlay;
-  background-color: #121212;
+  background-color: #141518;
   font-family: "Poppins";
 }
 
@@ -51,6 +53,8 @@ body::-webkit-scrollbar {
 .banner-text h1 {
   font-size: 50px;
   color: springgreen;
+  font-family: "Inter";
+  font-weight: 400;
 }
 
 .banner-text h3 {
@@ -66,7 +70,9 @@ nav {
   margin: 0;
   padding: 0;
   text-align: center;
-  background-color: rgb(32, 32, 32);
+  /* background-color: #1b1c1f; */
+  background-color: rgba(27, 28, 31, 0.3);
+  backdrop-filter: blur(15px);
   box-shadow: 0 5px 4px 0 rgba(0, 0, 0, 0.5);
   user-select: none;
   z-index: 1;
@@ -162,7 +168,7 @@ a {
   height: 21px;
   padding: 0 1em;
   text-align: right;
-  color: gray;
+  color: gainsboro;
 }
 
 .editor-body::-webkit-scrollbar {
@@ -197,10 +203,10 @@ a {
 }
 
 .function-property {
-  color: skyblue;
+  color: cyan;
   font-family: "Space Mono";
 }
 
 .section-reference {
-  color: cyan;
+  color: skyblue;
 }
