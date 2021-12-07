@@ -118,6 +118,10 @@ section {
   margin-bottom: 75px;
 }
 
+video {
+  width: 100%;
+}
+
 h1 {
   font-size: 50px;
 }
@@ -168,7 +172,7 @@ a {
   height: 21px;
   padding: 0 1em;
   text-align: right;
-  color: gainsboro;
+  color: rgba(255, 255, 255, 0.3);
 }
 
 .editor-body::-webkit-scrollbar {
@@ -209,4 +213,8 @@ a {
 
 .section-reference {
   color: skyblue;
+}
+
+img {
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
 }

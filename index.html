@@ -47,7 +47,7 @@
         <li><a href="#overview">Overview</a></li>
         <li><a href="#prerequisites">Prerequisites</a></li>
         <li><a href="#splash-screen">Splash Screen</a></li>
-        <li><a href="">Controller</a></li>
+        <li><a href="#controller">Controller</a></li>
         <li><a href="">Bluetooth Functions</a></a>
         <li><a href="">Settings</a></li>
         <li><a href="">Save File</a></li>
@@ -212,6 +212,306 @@ import 'package:shared_preferences/shared_preferences.dart'; //Shared Preference
       <p>For ease of use, I made a dummy Start screen using a <span class="commands">StatelessWidget</span>. This page just contains a button that redirects to the <span class="file-names">Controller</span> page whilst also loading the user settings. User settings are loaded using an instance, <span class="function-property">prefs</span>, of the <span class="function-property">SharedPreference</span> class. You will learn more about the SharedPreference class in the <span class="section-reference">Save File</span> section.</p>
       <p><span class="commands">getVisitingStatus()</span>, <span class="commands">restoreToDefaults()</span>, <span class="commands">loadSettings()</span> and <span class="commands">setVisitingStatus()</span> are functions which are going to be discussed in <span class="section-reference">Save File</span> section.</p>
       <p>The line <span class="commands">Navigator.of(context).push(MaterialPageRoute(builder: (context) => Controller()));</span> basically moves to the <span class="file-names">Controller</span> page. This is usually written in the <span class="function-property">onPressed</span> property of a button or any in any code blocks where page trasfer is required.</p>
+      <p>In the end, the splash screen should look like this.</p>
+      <video src="./assets/videos/Splash Screen Output.mp4" controls preload="auto">Video not supported</video>
+      </section>
+      <section id="controller">
+        <h1>Controller Page</h1>
+        <p>Now, we can finally get started on the fun stuff. Let's start out by making the controller. At first, make a new <span class="file-names">dart</span> file, you can call it anything. I am going to call it <span class="file-names">Controller</span>.</p>
+        <p>We will start by importing some libraries and files.</p>
+        <div class="code-editor">
+          <div class="editor-window-header">
+            <div class="action-buttons"></div>
+            <h3 class="window-header-text">controller.dart</h3>
+          </div>
+        <div class="editor-body">
+          <pre><code class="language-dart">import 'dart:ui'; //Flutter Default Library
+import 'package:bluetooth_controller/settings.dart'; //Settings Page > will be discussed later on
+import 'package:flutter/cupertino.dart'; //Flutter Default Library
+import 'package:flutter/material.dart'; //Flutter Default Library
+import 'package:flutter/services.dart'; //Flutter Default Library
+import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart'; //Bluetooth Serial Library
+import 'file_storage_functions.dart'; //All functions for file storage are here</code></pre>
+        </div>
+      </div>  
+      <p>My controller is going to look like this.</p>
+      <img src="./assets/Controller-Page.png" alt="">
+      <p>I may have gone overboard with 10 extra buttons, but you can make the controller as you like.</p>
+      <p>To achieve this look, all elements are nested in one <span class="commands">Row()</span> with its children being the Left Button followed by a column of Up and Down button. The third child is the right button followed by 2 columns of 5 extra buttons. The top left Logo and Bluetooth Status indicator and the bottom Bluetooth icon button are outside the <span class="commands">Row()</span>. All these 4 elements are the children of the <span class="commands">Scaffold()</span>.</p>
+      <p>If you want to copy my look, then here is the code for the controller page.</p>
+      <div class="code-editor">
+        <div class="editor-window-header">
+          <div class="action-buttons"></div>
+          <h3 class="window-header-text">controller.dart</h3>
+        </div>
+      <div class="editor-body">
+        <pre><code class="language-dart">class Controller extends StatefulWidget {
+  const Controller({Key? key}) : super(key: key);
+
+  @override
+  _ControllerState createState() => _ControllerState();
+}
+
+class _ControllerState extends State&lt;Controller&gt; {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: const Color(0xff121212),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Stack(
+              children: [
+                Positioned(
+                    left: 30,
+                    child: Container(
+                      width: 100,
+                      height: 50,
+                      child: Image(image: AssetImage('assets/TTA-Logo.png'),),
+                    )
+                ),
+                Align(
+                  child: SizedBox( //Bluetooth Status
+                    width: 100,
+                    height: 50,
+                    child: DecoratedBox(decoration: BoxDecoration(
+                      color:  _connected ? Colors.greenAccent : Colors.red,
+                      border: Border.all(width: 5, color: Colors.black54),
+                      borderRadius: BorderRadius.circular(50),
+                    )),
+                  ),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                GestureDetector(
+                  onLongPressDown: (_)async {},
+                  onLongPressEnd: (_){},
+                  onLongPressCancel: (){},
+                  child: ElevatedButton( //Left Arrow
+                    onPressed: () {},
+                    child: Icon(Icons.arrow_left, color: Colors.white, size: 30),
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      side: BorderSide(width: 5, color: Colors.black54),
+                      padding: EdgeInsets.all(20),
+                      primary: Colors.deepPurpleAccent, // <-- Button color
+                    ),
+                  ),
+                ),
+
+                SizedBox(width: 10),
+
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onLongPressDown: (_) async {},
+                      onLongPressEnd: (_){},
+                      onLongPressCancel: (){},
+                      child: ElevatedButton( //Up Arrow
+                        onPressed: () {},
+                        child: Icon(Icons.arrow_drop_up, color: Colors.white, size: 30),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          side: BorderSide(width: 5, color: Colors.black54),
+                          padding: EdgeInsets.all(20),
+                          primary: Colors.deepPurpleAccent, // <-- Button color
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 75),
+
+                    GestureDetector(
+                      onLongPressDown: (_) async {},
+                      onLongPressEnd: (_){},
+                      onLongPressCancel: (){},
+                      child: ElevatedButton( //Down Arrow
+                        onPressed: () {},
+                        child: Icon(Icons.arrow_drop_down, color: Colors.white, size: 30),
+                        style: ElevatedButton.styleFrom(
+                          shape: CircleBorder(),
+                          side: BorderSide(width: 5, color: Colors.black54),
+                          padding: EdgeInsets.all(20),
+                          primary: Colors.deepPurpleAccent, // <-- Button color
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+
+                SizedBox(width: 10),
+
+                GestureDetector(
+                  onLongPressDown: (_) async {},
+                  onLongPressEnd: (_){},
+                  onLongPressCancel: (){},
+                  child: ElevatedButton( //Right Arrow
+                    onPressed: () {},
+                    child: Icon(Icons.arrow_right, color: Colors.white, size: 30),
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      side: BorderSide(width: 5, color: Colors.black54),
+                      padding: EdgeInsets.all(20),
+                      primary: Colors.deepPurpleAccent, // <-- Button color
+                    ),
+                  ),
+                ),
+
+                SizedBox(width: 175,),
+
+                Column( //Odd Panel
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("1"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("3"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("5"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("7"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("9"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                  ],
+                ),
+
+                SizedBox(width: 50,),
+
+                Column( //Even Panel
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("2"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("4"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("6"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("8"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                    ElevatedButton(onPressed: () async{},
+                        child: Text("0"),
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.deepPurpleAccent,
+                          side: BorderSide(width: 1, color: Colors.black54),)),
+                  ],
+                )
+              ],
+            ),
+
+            IconButton(onPressed: () {
+              showDialog(context: context, builder: (context) {
+                return BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                  child: Dialog(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                    backgroundColor: Color(0xff121212).withOpacity(0.5),
+                    child: Container(
+                      height: 200,
+                      width: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(onPressed: () {
+                              showDialog(context: context, builder: (context){
+                                return StatefulBuilder(builder: (context, setState){
+                                  return BackdropFilter(
+                                    filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                                    child: Dialog(
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                                        backgroundColor: Color(0xff121212).withOpacity(0.25),
+                                        child: Container(
+                                          height: 150,
+                                          width: 100,
+                                          margin: EdgeInsets.only(top: 20),
+                                          child: Column(
+                                            children: [
+                                              DropdownButton(),
+                                              ElevatedButton(
+                                                child: Text("Connect"), 
+                                                style: ElevatedButton.styleFrom(primary: Colors.teal), 
+                                                onPressed: (){setState(() {_connect(); _connected ? Navigator.pop(context) : null;});},
+                                                ),
+                                            ],
+                                          ),
+                                        )
+                                    ),
+                                  );
+                                });
+                              });
+                            }, child: Text("Connect to Bot", style: TextStyle(color: Colors.tealAccent))),
+                            TextButton(onPressed: () {
+                              loadSettings(); 
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => Settings()));
+                            }, 
+                            child: Text("Settings")
+                            ),
+                            TextButton(onPressed: (){
+                              _disconnect(); Navigator.pop(context);
+                            }, 
+                            child: Text("Disconnect from Bot", style: TextStyle(color: Colors.redAccent),)
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              });
+            },
+              icon: _connected ? Icon(Icons.bluetooth_connected_rounded) : Icon(Icons.bluetooth_disabled_rounded),
+              color: _connected ? Colors.blueAccent : Colors.redAccent,
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            )
+          ],
+        )
+    );
+  }
+}</code></pre>
+      </div>
+    </div>  
+    <p>You will see the DPad buttons are wrapped around <span class="commands">GestureDetector()</span>. This is done to check for long-press i.e. the button is being held down. We want to check this so that the data stream is sent only when the button is being held down. </p>
+    <p>The properties <span class="function-property">onLongPressDown</span>, <span class="function-property">onLongPressEnd</span>, <span class="function-property">onLongPressCancel</span> detects long-press, ends long-press, cancel long-press if the button is tapped.</p>
+    <p>Till this point, you may have noticed that some functions have the <span class="function-property">async</span> word. This is because those function blocks are going to have a delay/time duration.</p>
+    <p>The function <span class="commands">setState()</span> re-draws the page whenever it is called. This is useful to change the appearance of elements and update booleans.</p>
+    <p>The bottom Bluetooth icon button opens a dialog box that takes you settings page, connect to a robot and disconnect from a robot.</p>
+    <img src="./assets/First Dialog Box.png" alt="">
+    <p>After pressing Connect to Bot.</p>
+    <img src="./assets/Second Dialog Box.png" alt="">
+    <p>In the next section, we are going to make the controller functional.</p>
       </section>
     </main>
   </body>
