@@ -67,8 +67,6 @@ body::-webkit-scrollbar {
 
 nav {
   list-style: none;
-  margin: 0;
-  padding: 0;
   text-align: center;
   /* background-color: #1b1c1f; */
   background-color: rgba(27, 28, 31, 0.3);
@@ -78,8 +76,21 @@ nav {
   z-index: 1;
 }
 
-nav li {
+nav ul {
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
   display: inline-block;
+  vertical-align: top;
+}
+
+nav li {
+  list-style-type: none;
+  padding: 0px;
+  height: 25px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  display: inline;
 }
 
 nav li a {
@@ -98,14 +109,6 @@ nav li a:hover {
   position: fixed;
   top: 0;
   width: 100%;
-}
-
-.github {
-  position: absolute;
-  right: 5vh;
-  transform: translateY(-165%);
-  width: 4vh;
-  height: 4vh;
 }
 
 main {
